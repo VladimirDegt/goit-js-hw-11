@@ -4,15 +4,19 @@ import { clearPagePhotos } from './clear-page-photos';
 export function renderPhotos ({totalHits, hits}) {
   if(hits.length === 0) {
     clearPagePhotos();
+    document.querySelector('.load-more').classList.add('is-hidden')
     return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
   }
   
   Notify.success(`Hooray! We found ${totalHits} images.`)
+  document.querySelector('.load-more').classList.remove('is-hidden');
 
   const template = hits.map( ({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) =>
   `
   <div class="photo-card">
-    <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+    <div class="photo">
+      <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+    </div>
     <div class="info">
       <div>
         <p class="info-item"><b>Likes</b></p>
@@ -35,6 +39,6 @@ export function renderPhotos ({totalHits, hits}) {
   `
   ).join('');
 
-  document.querySelector('.gallery').innerHTML= template;
+  document.querySelector('.gallery').insertAdjacentHTML('beforeend', template);
 };
 
