@@ -76,6 +76,7 @@ button {
   width: 80px;
   border-radius: 4px;
   cursor: pointer;
+  text-transform: uppercase;
 }
 
 .photo-card {
@@ -119,3 +120,8 @@ img {
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
 
 }
+
+.text__label {
+  text-align: center;
+}
+

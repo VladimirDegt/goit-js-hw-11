@@ -1,4 +1,7 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
+
 import { clearPagePhotos } from './clear-page-photos';
 import { refs } from './refs-elements';
 
@@ -20,7 +23,9 @@ export function renderPhotos (resolve, event) {
   `
   <div class="photo-card">
     <div class="photo">
-      <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+      <a href="${largeImageURL}" alt="${tags}">
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+      </a>
     </div>
     <div class="info">
       <div>
@@ -45,5 +50,14 @@ export function renderPhotos (resolve, event) {
   ).join('');
 
   refs.gallery.insertAdjacentHTML('beforeend', template);
+  
+  let gallery = new SimpleLightbox('.gallery .photo-card .photo a', {
+    close: false, 
+    showCounter: false,
+    captionsData: 'alt',
+    captionDelay: 250,
+    captionClass: 'text__label',
+  });
+  gallery.refresh()
 };
 

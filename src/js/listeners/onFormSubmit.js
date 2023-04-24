@@ -10,7 +10,6 @@ export function onFormSubmit (e) {
     if(!findItem) {
       return
     }
-    refs.form.reset();
 
     fetchPhotoClickSubmit(findItem).then((resolve) => renderPhotos(resolve, e)).catch((error)=> console.log(error))
   };
