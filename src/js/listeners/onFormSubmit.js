@@ -1,5 +1,6 @@
 import { fetchPhotoClickSubmit } from "../fetch-photo-click-submit";
 import { renderPhotos } from "../render-photos"
+import { refs } from "../refs-elements";
 
 export function onFormSubmit (e) {
     e.preventDefault();
@@ -9,6 +10,8 @@ export function onFormSubmit (e) {
     if(!findItem) {
       return
     }
-  
+    refs.form.reset();
+
     fetchPhotoClickSubmit(findItem).then((resolve) => renderPhotos(resolve, e)).catch((error)=> console.log(error))
   };
+  
