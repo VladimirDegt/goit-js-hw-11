@@ -1,3 +1,5 @@
+import { refs } from "./refs-elements";
+
 export function clearPagePhotos (){
-  document.querySelector('.gallery').innerHTML = '';
+  refs.gallery.innerHTML = '';
 };

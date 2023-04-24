@@ -1,26 +1,14 @@
-const debounce = require('lodash.debounce');
-const DEBOUNCE_DELAY = 300;
+import { onButtonClick } from "./js/listeners/onButtonClick";
+import { onFormSubmit } from "./js/listeners/onFormSubmit";
+import { refs } from "./js/refs-elements";
 
-import { fetchPhotoClickSubmit } from "./js/fetch-photo";
-import { fetchPhotoClickButton } from "./js/fetch-photo";
-import { renderPhotos } from "./js/render-photos";
-
-document.querySelector('form').addEventListener('submit', onFormSubmit);
-document.querySelector('.load-more').addEventListener('click', onButtonClick);
-document.querySelector('.load-more').classList.add('is-hidden');
-
-function onFormSubmit (e) {
-  e.preventDefault();
-
-  const {searchQuery} = e.target.elements;
-  const findItem = searchQuery.value.trim()
-  if(!findItem) {
-    return
-  }
-
-  fetchPhotoClickSubmit(findItem).then(renderPhotos).catch((error)=> console.log(error))
+export const API_KEY = '35689289-d239eabcb13b35ae6aaf4f6ed';
+export let optionsSearch = {
+  name: '',
+  countClick: 0
 };
 
-function onButtonClick() {
-  fetchPhotoClickButton().then(renderPhotos).catch((error)=> console.log(error))
-};
+refs.form.addEventListener('submit', onFormSubmit);
+refs.btnLoad.addEventListener('click', onButtonClick);
+refs.btnLoad.classList.add('is-hidden');
+
