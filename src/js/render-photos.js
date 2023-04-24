@@ -16,7 +16,7 @@ export function renderPhotos (resolve, event) {
   
   if(event.target === refs.form) {
     Notify.success(`Hooray! We found ${totalHits} images.`)
-    refs.btnLoad.classList.remove('is-hidden');
+    // refs.btnLoad.classList.remove('is-hidden');
   }
   
   const template = hits.map( ({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) =>
@@ -51,6 +51,8 @@ export function renderPhotos (resolve, event) {
 
   refs.gallery.insertAdjacentHTML('beforeend', template);
   
+  refs.btnLoad.classList.remove('is-hidden');
+
   let gallery = new SimpleLightbox('.gallery .photo-card .photo a', {
     close: false, 
     showCounter: false,
