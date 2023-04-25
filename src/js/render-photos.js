@@ -1,9 +1,9 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { clearPagePhotos } from './clear-page-photos';
 import { refs } from './refs-elements';
+import { scroll } from './scroll-page';
+import { createInstanceSimpleLightBox } from './create-instance-SimpleLightbox';
 
 export function renderPhotos (resolve, event) {
   const {totalHits, hits} = resolve
@@ -16,7 +16,6 @@ export function renderPhotos (resolve, event) {
   
   if(event.target === refs.form) {
     Notify.success(`Hooray! We found ${totalHits} images.`)
-    // refs.btnLoad.classList.remove('is-hidden');
   }
   
   const template = hits.map( ({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) =>
@@ -48,18 +47,14 @@ export function renderPhotos (resolve, event) {
   </div>
   `
   ).join('');
-
   refs.gallery.insertAdjacentHTML('beforeend', template);
-  
-  refs.btnLoad.classList.remove('is-hidden');
 
-  let gallery = new SimpleLightbox('.gallery .photo-card .photo a', {
-    close: false, 
-    showCounter: false,
-    captionsData: 'alt',
-    captionDelay: 250,
-    captionClass: 'text__label',
-  });
-  gallery.refresh()
+  if(event.target === refs.btnLoad || event.target === document){
+    scroll();
+  }
+  //реализация появления новых фото через кнопку
+  // refs.btnLoad.classList.remove('is-hidden');
+
+  createInstanceSimpleLightBox();
 };
 

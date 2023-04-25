@@ -2,7 +2,7 @@ import {Spinner} from 'spin.js';
 
 import { optionsSearch } from "..";
 import { API_KEY } from "..";
-import { refs } from './refs-elements';
+import { refs } from './refs-elements'
 
 export function fetchPhotoClickButton() {
   refs.btnLoad.classList.add('is-hidden');

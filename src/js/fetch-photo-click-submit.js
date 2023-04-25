@@ -10,7 +10,7 @@ export function fetchPhotoClickSubmit(search) {
 
   if(optionsSearch.name === search) {
     refs.btnLoad.classList.add('is-hidden');
-    throw 'Это повторый вызов через сабмит' 
+    throw 'Это повторный вызов через сабмит, ничего не делаем' 
   } else {
     optionsSearch.name = search;
     optionsSearch.countClick = 1;
