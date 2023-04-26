@@ -4,7 +4,7 @@ import { instanceApiService } from "../api-service";
 import { renderPhotos } from "../render-photos";
 import { clearPagePhotos } from "../clear-page-photos";
 
-export function onFormSubmit (e) {
+export async function onFormSubmit (e) {
     e.preventDefault();
   
     const {searchQuery} = e.target.elements;
@@ -22,16 +22,22 @@ export function onFormSubmit (e) {
     instanceApiService.searchValue = findItem;
     instanceApiService.resetPage();
     instanceApiService.resetTotalElementsOnPage();
-    instanceApiService.fetchPhoto().then(({totalHits, hits}) => {
+
+    try {
+      const objectResolve = await instanceApiService.fetchPhoto();
+      const {totalHits, hits} = objectResolve;
+      
       if(hits.length === 0) {
         return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
       }
-
+  
       Notify.success(`Hooray! We found ${totalHits} images.`)
       instanceApiService.totalElementsOnPage = hits.length;
-      
+  
       renderPhotos(hits, e)
-    }).catch((error)=> console.log(error))
-
+    } catch(error) {
+      Notify.failure('Что-то пошло не так');
+      console.log('Что-то пошло не так');
+    }  
   };
   
