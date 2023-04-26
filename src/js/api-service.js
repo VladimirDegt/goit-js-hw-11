@@ -1,3 +1,5 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 import { spinner } from "./create-instance-Spinner";
 import { refs } from "./refs-elements";
 
@@ -8,20 +10,23 @@ class ApiService {
   constructor() {
     this.findValueOnInput = '';
     this.numberPage = 1;
+    this.totalElementsOnPage = 40;
   }
 
   fetchPhoto() {
     spinner.spin(refs.spinner)
-    return fetch(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.numberPage}`).then(response => {
+    return fetch(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
+    .then(response => {
       if(response.ok) {
         spinner.stop();
         this.numberPage += 1;
-  
+
         return response.json()
       } else {
         spinner.stop();
-  
-        return ('Ошибка') 
+        Notify.failure('Что-то пошло не так');
+
+        return ('Что-то пошло не так') 
       }
     })
   }
@@ -34,9 +39,22 @@ class ApiService {
     this.findValueOnInput = newValue;
   }
 
+  get totalElements() {
+    return this.totalElementsOnPage;
+  }
+
+  set totalElements(newTotal) {
+    this.totalElementsOnPage = newTotal;
+  }
+
   resetPage () {
     this.numberPage = 1;
   }
+
+  resetTotalElementsOnPage () {
+    this.totalElementsOnPage = 40;
+  }
+
 };
 
 export const instanceApiService = new ApiService();

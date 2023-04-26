@@ -1,3 +1,5 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 import { instanceApiService } from "../api-service";
 import { renderPhotos } from "../render-photos";
 import { clearPagePhotos } from "../clear-page-photos";
@@ -16,9 +18,20 @@ export function onFormSubmit (e) {
     }
 
     clearPagePhotos();
+
     instanceApiService.searchValue = findItem;
     instanceApiService.resetPage();
-    instanceApiService.fetchPhoto().then((resolve) => renderPhotos(resolve, e)).catch((error)=> console.log(error))
+    instanceApiService.resetTotalElementsOnPage();
+    instanceApiService.fetchPhoto().then(({totalHits, hits}) => {
+      if(hits.length === 0) {
+        return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
+      }
+
+      Notify.success(`Hooray! We found ${totalHits} images.`)
+      instanceApiService.totalElementsOnPage = hits.length;
+      
+      renderPhotos(hits, e)
+    }).catch((error)=> console.log(error))
 
   };
   

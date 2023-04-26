@@ -1,22 +1,9 @@
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
-import { clearPagePhotos } from './clear-page-photos';
 import { refs } from './refs-elements';
 import { scroll } from './scroll-page';
 import { instanceSimpleLightBox } from './create-instance-SimpleLightbox'
 
-export function renderPhotos (resolve, event) {
-  const {totalHits, hits} = resolve
+export function renderPhotos (hits, event) {
 
-  if(hits.length === 0) {
-    clearPagePhotos();
-    return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
-  }
-  
-  if(event.target === refs.form) {
-    Notify.success(`Hooray! We found ${totalHits} images.`)
-  }
-  
   const template = hits.map( ({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) =>
   `
   <div class="photo-card">
@@ -52,6 +39,6 @@ export function renderPhotos (resolve, event) {
     scroll();
   }
 
-  instanceSimpleLightBox.refresh()
+  instanceSimpleLightBox.refresh();
 };
 
