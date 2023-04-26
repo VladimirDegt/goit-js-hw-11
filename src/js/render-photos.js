@@ -3,14 +3,13 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { clearPagePhotos } from './clear-page-photos';
 import { refs } from './refs-elements';
 import { scroll } from './scroll-page';
-import { createInstanceSimpleLightBox } from './create-instance-SimpleLightbox';
+import { instanceSimpleLightBox } from './create-instance-SimpleLightbox'
 
 export function renderPhotos (resolve, event) {
   const {totalHits, hits} = resolve
 
   if(hits.length === 0) {
     clearPagePhotos();
-    refs.btnLoad.classList.add('is-hidden')
     return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
   }
   
@@ -49,12 +48,10 @@ export function renderPhotos (resolve, event) {
   ).join('');
   refs.gallery.insertAdjacentHTML('beforeend', template);
 
-  if(event.target === refs.btnLoad || event.target === document){
+  if(event.target === document){
     scroll();
   }
-  //реализация появления новых фото через кнопку
-  // refs.btnLoad.classList.remove('is-hidden');
 
-  createInstanceSimpleLightBox();
+  instanceSimpleLightBox.refresh()
 };
 

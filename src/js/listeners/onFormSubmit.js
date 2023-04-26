@@ -1,8 +1,6 @@
-import {Spinner} from 'spin.js';
-
-import { fetchPhotoClickSubmit } from "../fetch-photo-click-submit";
+import { instanceApiService } from "../api-service";
 import { renderPhotos } from "../render-photos";
-import { refs } from '../refs-elements';
+import { clearPagePhotos } from "../clear-page-photos";
 
 export function onFormSubmit (e) {
     e.preventDefault();
@@ -13,7 +11,14 @@ export function onFormSubmit (e) {
       return
     }
 
-    fetchPhotoClickSubmit(findItem).then((resolve) => renderPhotos(resolve, e)).catch((error)=> console.log(error))
+    if(instanceApiService.searchValue === findItem) {
+      return
+    }
+
+    clearPagePhotos();
+    instanceApiService.searchValue = findItem;
+    instanceApiService.resetPage();
+    instanceApiService.fetchPhoto().then((resolve) => renderPhotos(resolve, e)).catch((error)=> console.log(error))
 
   };
   
