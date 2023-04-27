@@ -14,38 +14,49 @@ class ApiService {
   }
 
   async fetchPhoto() {
-    spinner.spin(refs.spinner)
-    
-    const response = await axios(BASE_URL, {
+
+    const instanceAxios = axios.create({
+      baseURL: `${BASE_URL}`,
       params: {
         key: API_KEY,
-        q: this.findValueOnInput,
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
+        q: this.findValueOnInput,
         per_page: this.totalElementsOnPage,
         page: this.numberPage,
-      }
-    })
-    .catch(function(error) {
-      spinner.stop();
-  
-      if(error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log('Error', error.message);
-      }
-      console.log(error.config);
-    })
+      },
 
-    spinner.stop();
+      onUploadProgress: spinner.spin(refs.spinner),
+
+      //onDownloadProgress: spinner.stop(), - чому так не працює?
+      onDownloadProgress: function () {
+        spinner.stop();
+      },
+
+      transformResponse: [function (data) {
+
+        return data;
+      }],
+    });
+
+    const response = await instanceAxios.get(BASE_URL)
+      .catch(function(error) { 
+        if(error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+    })
+    // де доцільно цю умову прописати?
     this.numberPage += 1;
 
-    return response.data;
+    return JSON.parse(response.data)
   }; 
 
   get searchValue() {
