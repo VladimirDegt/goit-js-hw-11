@@ -37,7 +37,6 @@ export async function onFormSubmit (e) {
       renderPhotos(hits, e)
     } catch(error) {
       Notify.failure('Что-то пошло не так');
-      console.log('Что-то пошло не так');
     }  
   };
   

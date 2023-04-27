@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { spinner } from "./create-instance-Spinner";
 import { refs } from "./refs-elements";
@@ -17,19 +16,37 @@ class ApiService {
   async fetchPhoto() {
     spinner.spin(refs.spinner)
     
-    try {
-      const response = await axios(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
+    const response = await axios(BASE_URL, {
+      params: {
+        key: API_KEY,
+        q: this.findValueOnInput,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+        per_page: this.totalElementsOnPage,
+        page: this.numberPage,
+      }
+    })
+    .catch(function(error) {
       spinner.stop();
-      this.numberPage += 1;
-      console.log(response.data);
+  
+      if(error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    })
 
-      return response.data;
-    } catch(error) {
-      spinner.stop();
+    spinner.stop();
+    this.numberPage += 1;
 
-      return ('Что-то пошло не так') 
-    }
-  }
+    return response.data;
+  }; 
 
   get searchValue() {
     return this.findValueOnInput;
