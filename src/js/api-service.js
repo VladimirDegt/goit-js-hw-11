@@ -16,19 +16,20 @@ class ApiService {
 
   async fetchPhoto() {
     spinner.spin(refs.spinner)
-    const response = await axios(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
-    if(response.ok) {
+    
+    try {
+      const response = await axios(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
       spinner.stop();
       this.numberPage += 1;
+      console.log(response.data);
 
-      return response.json()
-    } else {
-        spinner.stop();
-        Notify.failure('Что-то пошло не так');
+      return response.data;
+    } catch(error) {
+      spinner.stop();
 
-        return ('Что-то пошло не так') 
-      }
+      return ('Что-то пошло не так') 
     }
+  }
 
   get searchValue() {
     return this.findValueOnInput;
