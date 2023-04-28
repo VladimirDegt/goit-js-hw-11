@@ -14,74 +14,44 @@ class ApiService {
   }
 
   async fetchPhoto() {
+    spinner.spin(refs.spinner)
 
-    const instanceAxios = axios.create({
-      baseURL: `${BASE_URL}`,
-      params: {
-        key: API_KEY,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-        q: this.findValueOnInput,
-        per_page: this.totalElementsOnPage,
-        page: this.numberPage,
-      },
+    try {
+      const response = await axios(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
+      spinner.stop();
+      this.numberPage += 1;
 
-      onUploadProgress: spinner.spin(refs.spinner),
+      return response.data;
+    } catch(error) {
+      spinner.stop();
 
-      //onDownloadProgress: spinner.stop(), - чому так не працює?
-      onDownloadProgress: function () {
-        spinner.stop();
-      },
-
-      transformResponse: [function (data) {
-
-        return data;
-      }],
-    });
-
-    const response = await instanceAxios.get(BASE_URL)
-      .catch(function(error) { 
-        if(error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-    })
-    // де доцільно цю умову прописати?
-    this.numberPage += 1;
-
-    return JSON.parse(response.data)
-  }; 
+      return;
+    }
+  };
 
   get searchValue() {
     return this.findValueOnInput;
-  }
+  };
 
   set searchValue(newValue) {
     this.findValueOnInput = newValue;
-  }
+  };
 
   get totalElements() {
     return this.totalElementsOnPage;
-  }
+  };
 
   set totalElements(newTotal) {
     this.totalElementsOnPage = newTotal;
-  }
+  };
 
   resetPage () {
     this.numberPage = 1;
-  }
+  };
 
   resetTotalElementsOnPage () {
     this.totalElementsOnPage = 40;
-  }
+  };
 
 };
 
