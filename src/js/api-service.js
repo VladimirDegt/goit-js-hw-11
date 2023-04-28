@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { spinner } from "./create-instance-Spinner";
+// import { spinner } from "./create-instance-Spinner";
 import { refs } from "./refs-elements";
 
 const API_KEY = '35689289-d239eabcb13b35ae6aaf4f6ed';
@@ -14,16 +14,16 @@ class ApiService {
   }
 
   async fetchPhoto() {
-    spinner.spin(refs.spinner)
+    // spinner.spin(refs.spinner)
 
     try {
       const response = await axios(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
-      spinner.stop();
+      // spinner.stop();
       this.numberPage += 1;
 
       return response.data;
     } catch(error) {
-      spinner.stop();
+      // spinner.stop();
 
       return;
     }
