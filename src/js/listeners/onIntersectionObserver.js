@@ -9,7 +9,6 @@ export function onIntersectionObserver() {
       if(entry.isIntersecting){
         observer.unobserve(entry.target);
        
-        console.log(instanceApiService)
         if(instanceApiService.totalElementsOnPage < 40 && instanceApiService.numberPage === 2) {
           return 
         } else if(instanceApiService.totalElementsOnPage < 40 && instanceApiService.numberPage > 2) {

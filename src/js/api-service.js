@@ -1,7 +1,12 @@
 import axios from 'axios';
+import {Spinner} from 'spin.js';
+
+import { refs } from './refs-elements';
 
 const API_KEY = '35689289-d239eabcb13b35ae6aaf4f6ed';
 const BASE_URL = 'https://pixabay.com/api/';
+
+let spinner = new Spinner();
 
 class ApiService {
   constructor() {
@@ -11,13 +16,16 @@ class ApiService {
   }
 
   async fetchPhoto() {
-
+    spinner.spin(refs.spinner);
+    
     try {
       const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
       this.numberPage += 1;
+      spinner.stop()
 
       return response.data;
     } catch(error) {
+      spinner.stop()
 
       return;
     }
