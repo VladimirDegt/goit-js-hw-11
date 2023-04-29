@@ -29,7 +29,7 @@ export function onIntersectionObserver() {
       }
     })
   }, {
-    threshold: 1,
+    rootMargin: '50px',
   });
 
   observer.observe(document.querySelector('.gallery > .photo-card:last-child'))
