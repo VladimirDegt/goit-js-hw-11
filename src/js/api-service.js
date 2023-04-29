@@ -13,8 +13,10 @@ class ApiService {
   async fetchPhoto() {
 
     try {
-      const response = await axios(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
+      const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${this.findValueOnInput}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.totalElementsOnPage}&page=${this.numberPage}`)
       this.numberPage += 1;
+
+      console.log('ответ сервера', response);
 
       return response.data;
     } catch(error) {
@@ -50,3 +52,4 @@ class ApiService {
 };
 
 export const instanceApiService = new ApiService();
+

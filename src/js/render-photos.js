@@ -1,6 +1,7 @@
 import { refs } from './refs-elements';
 import { scroll } from './scroll-page';
 import { instanceSimpleLightBox } from './create-instance-SimpleLightbox'
+import { onIntersectionObserver } from './listeners/onIntersectionObserver';
 
 export function renderPhotos (hits, event) {
 
@@ -35,10 +36,13 @@ export function renderPhotos (hits, event) {
   ).join('');
   refs.gallery.insertAdjacentHTML('beforeend', template);
 
+  onIntersectionObserver();
+
   if(event.target === document){
     scroll();
   }
 
   instanceSimpleLightBox.refresh();
+
 };
 
