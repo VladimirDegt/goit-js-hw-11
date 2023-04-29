@@ -9,7 +9,10 @@ export function onIntersectionObserver() {
       if(entry.isIntersecting){
         observer.unobserve(entry.target);
        
-        if(instanceApiService.totalElements < 40) {
+        console.log(instanceApiService)
+        if(instanceApiService.totalElementsOnPage < 40 && instanceApiService.numberPage === 2) {
+          return 
+        } else if(instanceApiService.totalElementsOnPage < 40 && instanceApiService.numberPage > 2) {
           return Notify.info("We're sorry, but you've reached the end of search results.");
         }
 
