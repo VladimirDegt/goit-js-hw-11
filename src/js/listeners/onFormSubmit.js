@@ -23,8 +23,6 @@ export async function onFormSubmit (e) {
     instanceApiService.resetPage();
     instanceApiService.resetTotalElementsOnPage();
 
-    console.log('instance после сабміту перед resolve', instanceApiService);
-
     try {
       const objectResolve = await instanceApiService.fetchPhoto();
       const {totalHits, hits} = objectResolve;
@@ -36,11 +34,8 @@ export async function onFormSubmit (e) {
       Notify.success(`Hooray! We found ${totalHits} images.`)
       instanceApiService.totalElements = hits.length;
       
-      console.log('instance после сабміту після resolve', instanceApiService);
-
       renderPhotos(hits, e)
     } catch(error) {
-      Notify.failure('Что-то пошло не так');
       console.log(error.message);
     }  
   };
